@@ -45,7 +45,7 @@ void main()
 {
 	/*printout();
 	splashscreen();*/
-	//welcomeInput();
+	//welcomeInput();abc
 	mainMenu();
 	orderProcess();
 	receipt();
