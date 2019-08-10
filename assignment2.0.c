@@ -26,10 +26,11 @@ void creditcard();
 void memberPromotion();
 float getDepositQuantity();
 void printout();
+void repeatable();
 ///////////////////////////////////////////////////////////////////////
 //global dec
 
-int i = 1,i2=0, response = 0;
+int i = 1,i2=0, response = 0,x;
 float total = 0, total2 = 0,total4=0,total3=0,
 LoveLetterPrice, NutCookiesPrice, AssortedCookiesPrice,
 NutCookiesQuantity, LoveLetterTotal, AssortedCookiesQuantity,
@@ -43,9 +44,9 @@ enum CookieType { LoveLetter = 1, NutCookie = 2, AssortedCookie = 3 };
 
 void main()
 {
-	/*printout();
-	splashscreen();*/
-	//welcomeInput();abc
+	
+	//splashScreen();
+	//welcomeInput();
 	mainMenu();
 	orderProcess();
 	receipt();
@@ -131,8 +132,6 @@ void welcomeInput()
 		scanf("%s", &date);
 	}
 
-
-
 	printf("enter user name :");
 	rewind(stdin);
 	scanf("%s", &name);
@@ -165,20 +164,8 @@ void orderProcess()
 		do
 		{
 			ordermainMenuList();
-			response = askQues("Continues Order (y=yes n=no)? ");
-			if (response == 1)
-			{
-				ordermainMenuList();
-
-
-			}
-			else
-			{
-				Summary();
-			}
+			repeatable();
 		} while (response == 1);
-
-
 	}
 	else
 	{
@@ -195,13 +182,13 @@ ask:
 	switch (cookieType)
 	{
 	case 1:
-		printf("%-30s %-20f %-s", "LOVE LETTER", LOVELETTER, "");
+		printf("%-30s %-20.2f %-s", "LOVE LETTER", LOVELETTER, "");
 		break;
 	case 2:
-		printf("%-30s %-20f %-s", "NUT COOKIES", NUTCOOKIES, "");
+		printf("%-30s %-20.2f %-s", "NUT COOKIES", NUTCOOKIES, "");
 		break;
 	case 3:
-		printf("%-30s %-20f %-s", "ASSORTED COOKIES", ASSORTEDCOOKIES, "");
+		printf("%-30s %-20.2f %-s", "ASSORTED COOKIES", ASSORTEDCOOKIES, "");
 		break;
 	default:
 		break;
@@ -257,14 +244,14 @@ void ordermainMenuList()
 		i2 = i;
 
 		printf("%-30s %-20s %-s\n", product, Quantity, price);
-		printf("%-30s %-20.0f %-.2f\n", "love letter", LoveLetterQuantity, LoveLetterPrice);
-		printf("%-30s %-20.0f %-.2f\n", "nut cookies", NutCookiesQuantity, NutCookiesPrice);
-		printf("%-30s %-20.0f %-.2f\n", "assorted cookies", AssortedCookiesQuantity, AssortedCookiesPrice);
+		printf("%-30s %-20.0f RM%-.2f\n", "love letter", LoveLetterQuantity, LoveLetterPrice);
+		printf("%-30s %-20.0f RM%-.2f\n", "nut cookies", NutCookiesQuantity, NutCookiesPrice);
+		printf("%-30s %-20.0f RM%-.2f\n", "assorted cookies", AssortedCookiesQuantity, AssortedCookiesPrice);
 		printf("--------------------------------------------------------------------\n");
 		total = (LoveLetterPrice + NutCookiesPrice + AssortedCookiesPrice);
 		
-		printf("%-10s = %30f\n", "total of the food without tax", total);
-		printf("tax=%10f\n", TAX);
+		printf("%-10s = %22.2s%.2f\n", "total of the food without tax","RM", total);
+		printf("tax=                                             %10.2f\n", TAX);
 		if (total >= 500 && total <= 1000)
 		{
 			total=total* 0.95;
@@ -282,23 +269,24 @@ void ordermainMenuList()
 		}
 		
 		getDepositQuantity();
-		printf("your deposit is %f", atof(quantity));
+		printf("your deposit is                                      RM%.2f\n", atof(quantity));
 		depositAmmount = atof(quantity);
 		DepositTotal += depositAmmount;
 		total1 = ((total * TAX) - depositAmmount);
 		memberPromotion();
-		printf("%-10s =%40f\n", "total of the food after tax", total1);
+		printf("%-10s =RM%40.2f\n", "total of the food after tax", total1);
 		total2 += total1;
 		total3 = total2 - DepositTotal;
 		
 	} while (rply == 'Y' || rply == 'y');
-	orderProcess();
+	rewind(stdin);
+	repeatable();
 }
 float getDepositQuantity()
 {
 	goto ask;
 ask:
-	printf("how much deposit do you want to put ?");
+	printf("how much deposit do you want to put ?RM");
 	rewind(stdin);
 	scanf("%s", &quantity);
 	goto evalNum;
@@ -314,17 +302,17 @@ returnResult:
 void Summary()
 {
 	i--;
-	printf("so here is your order of the day\n");//change to summart of the day 
+	printf("so here is your order of the day\n"); 
 	printf("total order number for today:%d\n", i);
 
 	printf("%-30s %-20s %-s\n", product, Quantity, price);
-	printf("%-30s %-20.0f %-f\n", "love letter", LoveLetterTotal, LoveLetterPriceTotal);
-	printf("%-30s %-20.0f %-f\n", "nut cookies", NutCookiesTotal, NutCookiesPriceTotal);
-	printf("%-30s %-20.0f %-f\n", "assorted cookies", AssortedCookiesTotal, AssortedCookiesPriceTotal);
+	printf("%-30s %-20.0f RM%-.2f\n", "love letter", LoveLetterTotal, LoveLetterPriceTotal);
+	printf("%-30s %-20.0f RM%-.2f\n", "nut cookies", NutCookiesTotal, NutCookiesPriceTotal);
+	printf("%-30s %-20.0f RM%-.2f\n", "assorted cookies", AssortedCookiesTotal, AssortedCookiesPriceTotal);
 
-	printf("your total is %f\n", total2);
-	printf("your total deposit is %f\n", DepositTotal);
-	printf("your final total is %f\n ", total3);
+	printf("your total is RM%.2f\n", total2);
+	printf("your total deposit is RM%.2f\n", DepositTotal);
+	printf("your final total is RM%.2f\n ", total3);
 }
 void receipt()
 {
@@ -334,34 +322,29 @@ ask:
 
 	response = askQues("do you want to pay in credit card or cash ?(y=credit card ,n=cash)\n");
 	scanf("%c", &choice);
-	goto verify;
-	verify:
-	switch (choice)
+	
+	if (response == 1)
 	{
-	case 1:
 		creditcard();
-		break;
-	case 2:
+	}
+	else
+	{
 		cash();
-		break;
-
-	default:
-		goto ask;
 	}
 }
 
 void creditcard()
 {
-	total2 = total2 + 1;
-	printf("Credit card transaction will cost addRm 1 \n");
-	printf("the total after goverment tax and credit card fee %f", total3);
+	total3 = total3 + 1;
+	printf("Credit card transaction will add Rm 1 as service charge\n");
+	printf("the total after goverment tax and credit card fee RM%f\n", total3);
 	printout();
 }
 
 void cash()
 {
 	
-	printf("cash total is % f", total3);
+	printf("cash total is RM%.2f\n", total3);
 	printout();
 }
 
@@ -378,16 +361,17 @@ void memberPromotion()
 	}
 	else
 	{
-		total4 = total3;
+		
 		printf("no discount given\n");
 	}
 }
 
 void printout()
 {
-	response = askQues("do you want a print out ?");
+	response = askQues("Do you want a print out ?");
 	if (response == 1)
 	{
+		system("clr");
 		time_t t = time(NULL);
 		struct tm tm = *localtime(&t);
 		printf("%s\n%s\n", companyName, companyAddress);
@@ -398,16 +382,39 @@ void printout()
 		printf("order number:%d\n", i2);
 		printf("--------------------------------------------------------------------------------\n");
 		printf("%-30s %-20s %-s\n", product, Quantity, price);
-		printf("%-30s %-20.0f %-.2f\n", "love letter", LoveLetterQuantity, LoveLetterPrice);
-		printf("%-30s %-20.0f %-.2f\n", "nut cookies", NutCookiesQuantity, NutCookiesPrice);
-		printf("%-30s %-20.0f %-.2f\n", "assorted cookies", AssortedCookiesQuantity, AssortedCookiesPrice);
+		printf("%-30s %-20.0f RM%-.2f\n", "love letter", LoveLetterQuantity, LoveLetterPrice);
+		printf("%-30s %-20.0f RM%-.2f\n", "nut cookies", NutCookiesQuantity, NutCookiesPrice);
+		printf("%-30s %-20.0f RM%-.2f\n", "assorted cookies", AssortedCookiesQuantity, AssortedCookiesPrice);
 		printf("--------------------------------------------------------------------------------\n");
-		printf("%-10s = %30f\n", "SUBTOTAL", total2);
-		printf("%-10s =%40f\n", "NET TOTAL", total3);
-
+		printf("%-10s = RM%30.2f\n", "SUBTOTAL", total2);
+		printf("%-10s =RM%40.2f\n", "NET TOTAL", total3);
+		printf("==========================================================================================\n");
+		printf("THANK YOU VERY MUCH PLEASE DO COME AGAIN");
 	}
 	else {
 		printf("Thank you very Much");
 	}
 
 }
+void repeatable()
+{
+	
+	response = askQues("Continues Order (y=yes n=no)? ");
+	if (response == 1)
+	{
+		ordermainMenuList();
+
+
+	}
+	else
+	{
+		Summary();
+		receipt();
+	}
+	while (response == 1);
+}
+
+
+
+
+
